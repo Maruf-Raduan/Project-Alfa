@@ -96,7 +96,9 @@
             flex: 1;
             padding: 25px;
             overflow-y: auto;
+            overflow-x: hidden;
             scroll-behavior: smooth;
+            word-wrap: break-word;
         }
         .chat-box::-webkit-scrollbar { width: 8px; }
         .chat-box::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); }
@@ -109,6 +111,14 @@
             display: flex;
             gap: 12px;
             align-items: flex-start;
+            max-width: 100%;
+        }
+        .user {
+            flex-direction: row-reverse;
+            justify-content: flex-start;
+        }
+        .assistant {
+            flex-direction: row;
         }
         .message-avatar {
             width: 32px;
@@ -124,6 +134,15 @@
             flex: 1;
             color: #e2e8f0;
             padding-top: 4px;
+            max-width: 100%;
+            overflow-wrap: break-word;
+            word-break: break-word;
+        }
+        .user .message-content {
+            text-align: right;
+        }
+        .assistant .message-content {
+            text-align: left;
         }
         .user .message-avatar { 
             background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
@@ -151,6 +170,7 @@
             font-size: 14px;
             color: #f1f5f9;
             transition: all 0.3s ease;
+            min-width: 0;
         }
         input:focus {
             outline: none;
@@ -189,6 +209,8 @@
             font-size: 13px;
             line-height: 1.6;
             font-family: 'Courier New', monospace;
+            text-align: left;
+            max-width: 100%;
         }
         code { color: #94a3b8; }
         @keyframes fadeIn {
