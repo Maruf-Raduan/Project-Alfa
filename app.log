@@ -8,3 +8,4 @@ Press CTRL+C to quit
  * Restarting with stat
  * Debugger is active!
  * Debugger PIN: 102-246-621
+127.0.0.1 - - [14/Nov/2025 19:58:28] "GET / HTTP/1.1" 200 -

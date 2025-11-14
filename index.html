@@ -4,13 +4,14 @@
     <title>Java Learning Assistant</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            background: #0a0e27;
             min-height: 100vh;
-            color: #fff;
+            color: #e2e8f0;
         }
         .container { 
             max-width: 1000px; 
@@ -21,29 +22,72 @@
             flex-direction: column;
         }
         .header {
-            text-align: center;
-            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            padding: 20px 30px;
+            background: rgba(15, 23, 42, 0.8);
+            border-radius: 16px;
+            border: 1px solid rgba(148, 163, 184, 0.1);
             animation: fadeIn 0.6s ease-in;
         }
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+        }
         h1 { 
-            font-size: 2.5rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: #f1f5f9;
+            margin: 0;
         }
         .subtitle {
-            color: #a0aec0;
-            font-size: 1rem;
+            color: #94a3b8;
+            font-size: 0.875rem;
+            margin-top: 4px;
+        }
+        .status-badge {
+            padding: 6px 14px;
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: #22c55e;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background: #22c55e;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
         .chat-container {
             flex: 1;
-            background: rgba(26, 32, 44, 0.8);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             display: flex;
             flex-direction: column;
             overflow: hidden;
@@ -66,69 +110,75 @@
             line-height: 1.6;
         }
         .user { 
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
             color: white;
             margin-left: auto;
             border-bottom-right-radius: 5px;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
         }
         .assistant { 
-            background: rgba(45, 55, 72, 0.8);
+            background: rgba(30, 41, 59, 0.8);
             color: #e2e8f0;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(148, 163, 184, 0.2);
             border-bottom-left-radius: 5px;
         }
         .input-area { 
             padding: 20px 25px;
-            background: rgba(26, 32, 44, 0.6);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(15, 23, 42, 0.8);
+            border-top: 1px solid rgba(148, 163, 184, 0.1);
             display: flex;
             gap: 12px;
+            align-items: center;
         }
         input { 
             flex: 1;
-            padding: 15px 20px;
-            background: rgba(45, 55, 72, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            font-size: 15px;
-            color: #fff;
+            padding: 14px 18px;
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: 10px;
+            font-size: 14px;
+            color: #f1f5f9;
             transition: all 0.3s ease;
         }
         input:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+            border-color: #3b82f6;
+            background: rgba(30, 41, 59, 0.8);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
-        input::placeholder { color: #718096; }
+        input::placeholder { color: #64748b; }
         button { 
-            padding: 15px 30px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 14px 24px;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
             color: white;
             border: none;
-            border-radius: 12px;
+            border-radius: 10px;
             cursor: pointer;
-            font-size: 15px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         button:hover { 
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
         }
         button:active { transform: translateY(0); }
         pre { 
-            background: rgba(0, 0, 0, 0.4);
-            padding: 15px;
-            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 16px;
+            border-radius: 8px;
             overflow-x: auto;
             margin-top: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(148, 163, 184, 0.2);
             font-size: 13px;
-            line-height: 1.5;
+            line-height: 1.6;
+            font-family: 'Courier New', monospace;
         }
-        code { color: #a0aec0; }
+        code { color: #94a3b8; }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -140,61 +190,90 @@
         .quick-actions {
             display: flex;
             gap: 10px;
-            padding: 15px 25px;
+            padding: 16px 25px;
             flex-wrap: wrap;
-            background: rgba(26, 32, 44, 0.4);
+            background: rgba(15, 23, 42, 0.4);
+            border-bottom: 1px solid rgba(148, 163, 184, 0.1);
         }
         .quick-btn {
-            padding: 8px 16px;
-            background: rgba(102, 126, 234, 0.2);
-            border: 1px solid rgba(102, 126, 234, 0.3);
-            border-radius: 8px;
-            color: #a0aec0;
+            padding: 8px 14px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 6px;
+            color: #94a3b8;
             font-size: 13px;
             cursor: pointer;
             transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
         .quick-btn:hover {
-            background: rgba(102, 126, 234, 0.3);
-            color: #fff;
+            background: rgba(59, 130, 246, 0.2);
+            color: #f1f5f9;
+            border-color: rgba(59, 130, 246, 0.4);
         }
         .icon-btn {
-            padding: 15px 20px;
-            background: rgba(102, 126, 234, 0.2);
-            border: 1px solid rgba(102, 126, 234, 0.3);
-            border-radius: 12px;
+            padding: 14px 16px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 10px;
             cursor: pointer;
-            font-size: 18px;
-            transition: all 0.3s ease;
+            font-size: 16px;
+            transition: all 0.2s ease;
+            color: #94a3b8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .icon-btn:hover {
-            background: rgba(102, 126, 234, 0.4);
+            background: rgba(59, 130, 246, 0.2);
+            color: #f1f5f9;
+            border-color: rgba(59, 130, 246, 0.4);
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>☕ Java Learning Assistant</h1>
-            <p class="subtitle">Master Java with AI-powered guidance</p>
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <i class="fa-brands fa-java"></i>
+                </div>
+                <div>
+                    <h1>Java Learning Assistant</h1>
+                    <p class="subtitle">AI-Powered Java Education Platform</p>
+                </div>
+            </div>
+            <div class="status-badge">
+                <span class="status-dot"></span>
+                <span>AI Active</span>
+            </div>
         </div>
         <div class="chat-container">
             <div class="quick-actions">
-                <div class="quick-btn" onclick="quickSend('example hello world')">📝 Hello World</div>
-                <div class="quick-btn" onclick="quickSend('explain class')">💡 Explain Class</div>
-                <div class="quick-btn" onclick="quickSend('quiz basics')">🎯 Quiz Me</div>
-                <div class="quick-btn" onclick="quickSend('help')">❓ Help</div>
+                <div class="quick-btn" onclick="quickSend('example hello world')"><i class="fa-solid fa-code"></i> Code Example</div>
+                <div class="quick-btn" onclick="quickSend('explain class')"><i class="fa-solid fa-lightbulb"></i> Explain Concept</div>
+                <div class="quick-btn" onclick="quickSend('quiz basics')"><i class="fa-solid fa-circle-question"></i> Take Quiz</div>
+                <div class="quick-btn" onclick="quickSend('help')"><i class="fa-solid fa-circle-info"></i> Help</div>
             </div>
             <div class="chat-box" id="chatBox"></div>
             <div class="input-area">
                 <input type="file" id="imageInput" accept="image/*" style="display:none" onchange="handleImageSelect()">
-                <button class="icon-btn" onclick="document.getElementById('imageInput').click()" title="Upload image">🖼️</button>
-                <input type="text" id="userInput" placeholder="Ask me anything about Java..." onkeypress="if(event.key==='Enter') sendMessage()">
-                <button onclick="sendMessage()">Send</button>
+                <button class="icon-btn" onclick="document.getElementById('imageInput').click()" title="Upload image">
+                    <i class="fa-solid fa-image"></i>
+                </button>
+                <input type="text" id="userInput" placeholder="Ask anything about Java programming..." onkeypress="if(event.key==='Enter') sendMessage()">
+                <button onclick="sendMessage()">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <span>Send</span>
+                </button>
             </div>
-            <div id="imagePreview" style="display:none; padding: 10px 25px;">
-                <img id="previewImg" style="max-width: 200px; border-radius: 8px; border: 2px solid rgba(102, 126, 234, 0.5);">
-                <button onclick="clearImage()" style="margin-left: 10px; padding: 5px 10px; font-size: 12px;">❌ Remove</button>
+            <div id="imagePreview" style="display:none; padding: 10px 25px; background: rgba(15, 23, 42, 0.4);">
+                <img id="previewImg" style="max-width: 200px; border-radius: 8px; border: 2px solid rgba(59, 130, 246, 0.3);">
+                <button onclick="clearImage()" style="margin-left: 10px; padding: 6px 12px; font-size: 12px; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.3);">
+                    <i class="fa-solid fa-xmark"></i> Remove
+                </button>
             </div>
         </div>
     </div>
@@ -290,7 +369,7 @@
             }
         }
         
-        addMessage('👋 Welcome! I\'m your Java learning companion. Click a quick action above or ask me anything!', false);
+        addMessage('Welcome to Java Learning Assistant. I\'m here to help you master Java programming. Select a quick action above or type your question below.', false);
     </script>
 </body>
 </html>
