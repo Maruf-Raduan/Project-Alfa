@@ -7,11 +7,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
+        html, body { 
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: #0a0e27;
             min-height: 100vh;
             color: #e2e8f0;
+            overflow-x: hidden;
+            width: 100%;
         }
         .container { 
             max-width: 1000px; 
@@ -20,6 +22,8 @@
             height: 100vh;
             display: flex;
             flex-direction: column;
+            overflow-x: hidden;
+            width: 100%;
         }
         .header {
             display: flex;
@@ -91,6 +95,7 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            width: 100%;
         }
         .chat-box { 
             flex: 1;
@@ -211,6 +216,13 @@
             font-family: 'Courier New', monospace;
             text-align: left;
             max-width: 100%;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        code {
+            color: #94a3b8;
+            white-space: pre-wrap;
+            word-break: break-all;
         }
         code { color: #94a3b8; }
         @keyframes fadeIn {
