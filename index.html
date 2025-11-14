@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Java Learning Assistant</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+        h1 { color: #333; margin-bottom: 20px; }
+        .chat-box { background: white; border-radius: 8px; padding: 20px; height: 400px; overflow-y: auto; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .message { margin: 10px 0; padding: 10px; border-radius: 5px; }
+        .user { background: #007bff; color: white; text-align: right; }
+        .assistant { background: #e9ecef; color: #333; }
+        .input-area { display: flex; gap: 10px; }
+        input { flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px; }
+        button { padding: 12px 24px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; }
+        button:hover { background: #0056b3; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 5px; overflow-x: auto; margin-top: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>☕ Java Learning Assistant</h1>
+        <div class="chat-box" id="chatBox"></div>
+        <div class="input-area">
+            <input type="text" id="userInput" placeholder="Type 'help' for commands..." onkeypress="if(event.key==='Enter') sendMessage()">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+    <script>
+        const API_URL = '/chat';
+        
+        function addMessage(text, isUser) {
+            const chatBox = document.getElementById('chatBox');
+            const msg = document.createElement('div');
+            msg.className = 'message ' + (isUser ? 'user' : 'assistant');
+            
+            if (!isUser && text.includes('public class')) {
+                msg.innerHTML = '<pre>' + text + '</pre>';
+            } else {
+                msg.textContent = text;
+            }
+            
+            chatBox.appendChild(msg);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+        
+        async function sendMessage() {
+            const input = document.getElementById('userInput');
+            const message = input.value.trim();
+            if (!message) return;
+            
+            addMessage(message, true);
+            input.value = '';
+            
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({message: message})
+                });
+                const data = await response.json();
+                addMessage(data.response, false);
+            } catch (error) {
+                addMessage('Error connecting to server', false);
+            }
+        }
+        
+        addMessage('Welcome! Type "help" for commands or "example hello world" to start learning!', false);
+    </script>
+</body>
+</html>
