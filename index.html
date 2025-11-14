@@ -187,32 +187,7 @@
             from { opacity: 0; transform: translateX(-10px); }
             to { opacity: 1; transform: translateX(0); }
         }
-        .quick-actions {
-            display: flex;
-            gap: 10px;
-            padding: 16px 25px;
-            flex-wrap: wrap;
-            background: rgba(15, 23, 42, 0.4);
-            border-bottom: 1px solid rgba(148, 163, 184, 0.1);
-        }
-        .quick-btn {
-            padding: 8px 14px;
-            background: rgba(59, 130, 246, 0.1);
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            border-radius: 6px;
-            color: #94a3b8;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .quick-btn:hover {
-            background: rgba(59, 130, 246, 0.2);
-            color: #f1f5f9;
-            border-color: rgba(59, 130, 246, 0.4);
-        }
+
         .icon-btn {
             padding: 14px 16px;
             background: rgba(59, 130, 246, 0.1);
@@ -251,12 +226,6 @@
             </div>
         </div>
         <div class="chat-container">
-            <div class="quick-actions">
-                <div class="quick-btn" onclick="quickSend('example hello world')"><i class="fa-solid fa-code"></i> Code Example</div>
-                <div class="quick-btn" onclick="quickSend('explain class')"><i class="fa-solid fa-lightbulb"></i> Explain Concept</div>
-                <div class="quick-btn" onclick="quickSend('quiz basics')"><i class="fa-solid fa-circle-question"></i> Take Quiz</div>
-                <div class="quick-btn" onclick="quickSend('help')"><i class="fa-solid fa-circle-info"></i> Help</div>
-            </div>
             <div class="chat-box" id="chatBox"></div>
             <div class="input-area">
                 <input type="file" id="imageInput" accept="image/*" style="display:none" onchange="handleImageSelect()">
@@ -335,10 +304,7 @@
             return div.innerHTML;
         }
         
-        function quickSend(message) {
-            document.getElementById('userInput').value = message;
-            sendMessage();
-        }
+
         
         async function sendMessage() {
             const input = document.getElementById('userInput');
