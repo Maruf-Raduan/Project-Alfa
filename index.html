@@ -158,6 +158,18 @@
             background: rgba(102, 126, 234, 0.3);
             color: #fff;
         }
+        .icon-btn {
+            padding: 15px 20px;
+            background: rgba(102, 126, 234, 0.2);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+        .icon-btn:hover {
+            background: rgba(102, 126, 234, 0.4);
+        }
     </style>
 </head>
 <body>
@@ -175,27 +187,67 @@
             </div>
             <div class="chat-box" id="chatBox"></div>
             <div class="input-area">
+                <input type="file" id="imageInput" accept="image/*" style="display:none" onchange="handleImageSelect()">
+                <button class="icon-btn" onclick="document.getElementById('imageInput').click()" title="Upload image">🖼️</button>
                 <input type="text" id="userInput" placeholder="Ask me anything about Java..." onkeypress="if(event.key==='Enter') sendMessage()">
                 <button onclick="sendMessage()">Send</button>
+            </div>
+            <div id="imagePreview" style="display:none; padding: 10px 25px;">
+                <img id="previewImg" style="max-width: 200px; border-radius: 8px; border: 2px solid rgba(102, 126, 234, 0.5);">
+                <button onclick="clearImage()" style="margin-left: 10px; padding: 5px 10px; font-size: 12px;">❌ Remove</button>
             </div>
         </div>
     </div>
     <script>
         const API_URL = '/chat';
+        let selectedImage = null;
         
-        function addMessage(text, isUser) {
+        function addMessage(text, isUser, imageUrl = null) {
             const chatBox = document.getElementById('chatBox');
             const msg = document.createElement('div');
             msg.className = 'message ' + (isUser ? 'user' : 'assistant');
             
+            if (imageUrl && isUser) {
+                const img = document.createElement('img');
+                img.src = imageUrl;
+                img.style.maxWidth = '200px';
+                img.style.borderRadius = '8px';
+                img.style.marginBottom = '10px';
+                msg.appendChild(img);
+                msg.appendChild(document.createElement('br'));
+            }
+            
             if (!isUser && (text.includes('public class') || text.includes('{'))) {
-                msg.innerHTML = '<pre><code>' + escapeHtml(text) + '</code></pre>';
+                const pre = document.createElement('pre');
+                pre.innerHTML = '<code>' + escapeHtml(text) + '</code>';
+                msg.appendChild(pre);
             } else {
-                msg.textContent = text;
+                const textNode = document.createTextNode(text);
+                msg.appendChild(textNode);
             }
             
             chatBox.appendChild(msg);
             chatBox.scrollTop = chatBox.scrollHeight;
+        }
+        
+        function handleImageSelect() {
+            const input = document.getElementById('imageInput');
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    selectedImage = e.target.result;
+                    document.getElementById('previewImg').src = selectedImage;
+                    document.getElementById('imagePreview').style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        function clearImage() {
+            selectedImage = null;
+            document.getElementById('imageInput').value = '';
+            document.getElementById('imagePreview').style.display = 'none';
         }
         
         function escapeHtml(text) {
@@ -212,16 +264,24 @@
         async function sendMessage() {
             const input = document.getElementById('userInput');
             const message = input.value.trim();
-            if (!message) return;
+            if (!message && !selectedImage) return;
             
-            addMessage(message, true);
+            const displayMessage = message || 'Analyze this image';
+            addMessage(displayMessage, true, selectedImage);
+            
+            const payload = {message: message};
+            if (selectedImage) {
+                payload.image = selectedImage;
+            }
+            
             input.value = '';
+            clearImage();
             
             try {
                 const response = await fetch(API_URL, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({message: message})
+                    body: JSON.stringify(payload)
                 });
                 const data = await response.json();
                 addMessage(data.response, false);
